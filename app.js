@@ -284,3 +284,43 @@ function showHome() {
   document.getElementById('home-page').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+function renderDetailPage(key) {
+  const d = drinks[key];
+  if (!d) return;
+
+  const nameEl = document.getElementById('detail-drink-name');
+  const svgEl = document.getElementById('detail-svg-container');
+  const tasteEl = document.getElementById('detail-taste');
+  const ingredientsEl = document.getElementById('detail-ingredients');
+  const metaEl = document.getElementById('detail-meta');
+  const stepsEl = document.getElementById('detail-steps');
+
+  if (!nameEl || !svgEl || !tasteEl || !ingredientsEl || !metaEl || !stepsEl) {
+    return;
+  }
+
+  nameEl.textContent = d.name;
+  svgEl.innerHTML = d.svg;
+  tasteEl.innerHTML = d.taste
+    .map((t, i) => `<li class="${i > 1 ? 'dark' : ''}">${t}</li>`)
+    .join('');
+  ingredientsEl.textContent = d.ingredients;
+  metaEl.innerHTML = `Prep time: ${d.prep}<br>Serving: ${d.serving}<br>${d.calories}`;
+  stepsEl.innerHTML = d.steps.map(s => `
+    <div class="step">
+      <div class="step-title">${s.title}</div>
+      <div class="step-illustration">${s.illustration}</div>
+      <div class="step-desc">${s.desc}</div>
+    </div>
+  `).join('');
+
+  document.title = `SipPretty - ${d.name}`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const drinkKey = document.body.dataset.drink;
+  if (drinkKey) {
+    renderDetailPage(drinkKey);
+  }
+});

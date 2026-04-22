@@ -229,6 +229,10 @@ nav {
   transition: background 0.2s, border-color 0.2s;
 }
 .back-btn:hover { background: var(--pink-light); border-color: var(--pink); }
+.back-btn:link,
+.back-btn:visited {
+  text-decoration: none;
+}
 .detail-title {
   font-family: 'Caveat', cursive;
   font-size: 1.8rem; color: var(--text);
