@@ -1,4 +1,5 @@
 const stage = document.getElementById('vinyl-stage');
+const aboutPage = document.querySelector('.about-page');
 
 /** Users cannot scroll past this Y offset on the About page. */
 const MAX_ABOUT_SCROLL_Y = 1200;
@@ -8,9 +9,13 @@ function clamp(v, min, max) {
 }
 
 function capAboutScroll() {
-  const y = window.scrollY || window.pageYOffset || 0;
+  const y = aboutPage ? aboutPage.scrollTop : window.scrollY || window.pageYOffset || 0;
   if (y > MAX_ABOUT_SCROLL_Y) {
-    window.scrollTo(0, MAX_ABOUT_SCROLL_Y);
+    if (aboutPage) {
+      aboutPage.scrollTop = MAX_ABOUT_SCROLL_Y;
+    } else {
+      window.scrollTo(0, MAX_ABOUT_SCROLL_Y);
+    }
   }
 }
 
@@ -18,16 +23,17 @@ function animateAboutHero() {
   capAboutScroll();
   if (!stage) return;
 
-  const viewport = window.innerHeight || 1;
+  const viewport = aboutPage ? aboutPage.clientHeight : window.innerHeight || 1;
+  const scrollContainerHeight = aboutPage
+    ? aboutPage.scrollHeight
+    : document.documentElement.scrollHeight;
   const naturalMaxScroll = Math.max(
-    document.documentElement.scrollHeight - viewport,
+    scrollContainerHeight - viewport,
     0
   );
   const maxScroll = Math.min(naturalMaxScroll, MAX_ABOUT_SCROLL_Y);
-  const scrollY = Math.min(
-    window.scrollY || window.pageYOffset || 0,
-    MAX_ABOUT_SCROLL_Y
-  );
+  const currentY = aboutPage ? aboutPage.scrollTop : window.scrollY || window.pageYOffset || 0;
+  const scrollY = Math.min(currentY, MAX_ABOUT_SCROLL_Y);
   const stageTop = stage.offsetTop;
 
   // Start once the hero is near view, then keep animating until capped scroll end.
@@ -53,6 +59,10 @@ function animateAboutHero() {
   stage.style.setProperty('--disc-rotate', `${discRotate}deg`);
 }
 
-window.addEventListener('scroll', animateAboutHero, { passive: true });
 window.addEventListener('resize', animateAboutHero);
+if (aboutPage) {
+  aboutPage.addEventListener('scroll', animateAboutHero, { passive: true });
+} else {
+  window.addEventListener('scroll', animateAboutHero, { passive: true });
+}
 animateAboutHero();

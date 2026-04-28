@@ -6,7 +6,7 @@
   <title>Contact - Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Montserrat:ital,wght@0,400;0,500;0,700;1,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@400;500;700&family=Architects+Daughter&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Montserrat:ital,wght@0,400;0,500;0,700;1,600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="contact.css" />
 </head>
 <body>
@@ -16,9 +16,9 @@
         <img src="assets/logo-circle.png" alt="DH logo" />
       </a>
       <nav class="menu menu-right">
-        <a href="work.html">WORK</a>
-        <a href="about.html">ABOUT</a>
-        <a href="contact.html" class="active">CONTACT</a>
+        <a href="index.html#projects">Work</a>
+        <a href="about.html">About</a>
+        <a href="contact.html" class="active">Contact</a>
       </nav>
     </header>
 
@@ -36,18 +36,66 @@
         <div class="contact-form-wrap">
           <form class="contact-form" action="#" method="post">
             <div class="field">
-              <label for="contact-name">NAME</label>
+              <label for="contact-name">name</label>
               <input id="contact-name" name="name" type="text" autocomplete="name" required />
             </div>
             <div class="field">
-              <label for="contact-email">EMAIL ADDRESS</label>
+              <label for="contact-email">email address</label>
               <input id="contact-email" name="email" type="email" autocomplete="email" required />
             </div>
             <div class="field">
-              <label for="contact-message">MESSAGE</label>
+              <label for="contact-message">message</label>
               <textarea id="contact-message" name="message" rows="8" required></textarea>
             </div>
             <button type="submit">SUBMIT</button>
+            <div class="contact-socials" aria-label="Social links">
+              <div class="contact-socials-line" aria-hidden="true"></div>
+              <div class="contact-socials-row">
+                <a href="mailto:hada031114@gmail.com" aria-label="Email Dayna Ha">
+                  <img
+                    class="contact-social-icon"
+                    src="assets/contact-email-icon.png"
+                    alt="Email Dayna Ha"
+                  />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/daynaha"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Dayna Ha LinkedIn profile"
+                >
+                  <img
+                    class="contact-social-icon"
+                    src="assets/contact-linkedin-icon.png"
+                    alt="LinkedIn icon"
+                  />
+                </a>
+                <a
+                  href="https://medium.com/@daynaha"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Dayna Medium profile"
+                >
+                  <img
+                    class="contact-social-icon"
+                    src="assets/contact-medium-icon.png"
+                    alt="Medium icon"
+                  />
+                </a>
+                <a
+                  href="https://open.spotify.com/user/31r5qtfuh6bhdeelkzu5xxrps52i?si=1ebd24058d994741"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Dayna Spotify profile"
+                >
+                  <img
+                    class="contact-social-icon contact-social-icon--spotify"
+                    src="assets/contact-spotify-icon.png"
+                    alt="Spotify icon"
+                  />
+                </a>
+              </div>
+            </div>
           </form>
         </div>
       </div>

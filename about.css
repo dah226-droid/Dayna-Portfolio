@@ -1,9 +1,21 @@
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
 :root {
   --bg: #FFFFFF;
   --text: #000000;
   --purple: #87498B;
   --muted: #4a4a4a;
   --space-2: clamp(10px, 1.2vw, 18px);
+  --page-pad-top: clamp(12px, 2vw, 24px);
+  --top-nav-slot: calc(
+    var(--page-pad-top) + clamp(52px, 8vw, 100px) + clamp(8px, 1.2vw, 14px) + 43px
+  );
 }
 
 * {
@@ -16,24 +28,66 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 38px;
+  background-color: var(--purple);
+  z-index: 50;
+  pointer-events: none;
+}
+
+body::before {
+  left: 0;
+}
+
+body::after {
+  right: 0;
 }
 
 .about-page {
   width: 100%;
-  max-width: 100vw;
+  max-width: 100%;
+  height: 100dvh;
   margin: 0 auto;
-  padding: clamp(12px, 2vw, 24px) clamp(16px, 3vw, 40px) clamp(20px, 3vw, 44px);
+  padding: 0 calc(38px + clamp(16px, 3vw, 40px)) clamp(20px, 3vw, 44px);
+  padding-top: var(--top-nav-slot);
+  overflow-x: clip;
+  overflow-y: auto;
+}
+
+.about-hero,
+.resume-section {
+  overflow-x: clip;
 }
 
 .top-nav {
-  position: relative;
-  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 28px;
-  margin-bottom: 43px;
   width: 100%;
+  max-width: 100%;
+  margin: 0;
+  /* Same horizontal inset as home (.portfolio .top-nav); stripes stay in background layers */
+  padding: var(--page-pad-top) clamp(16px, 3vw, 40px) clamp(8px, 1.2vw, 14px);
+  box-sizing: border-box;
+  /* Match body side stripes so purple runs through the fixed header */
+  background:
+    linear-gradient(var(--purple), var(--purple)) left / 38px 100% no-repeat,
+    linear-gradient(var(--purple), var(--purple)) right / 38px 100% no-repeat,
+    var(--bg);
 }
 
 .dot-logo {
@@ -83,8 +137,8 @@ body {
 .intro {
   position: relative;
   z-index: 10;
-  left: clamp(24px, 6vw, 65px);
-  margin-top: 75px;
+  left: clamp(-10px, 6vw, 50px);
+  margin-top: 10px;
   font-family: "Architects Daughter", cursive;
   font-size: 23px;
   color: var(--muted);
@@ -181,6 +235,16 @@ body {
   isolation: isolate;
   transform: translateY(50%) scale(1.15);
   overflow: visible;
+  transition: transform 0.35s ease;
+}
+
+.resume-link:hover,
+.resume-link:focus-visible {
+  transform: translateY(50%) scale(1.22);
+}
+
+.resume-link:active {
+  transform: translateY(50%) scale(1.18);
 }
 
 .resume-arc {
@@ -199,6 +263,7 @@ body {
   font-size: clamp(16px, 2.7vw, 30px);
   letter-spacing: 0.2em;
   fill: #87498B;
+  transition: filter 0.35s ease;
 }
 
 .resume-disc {
@@ -207,6 +272,27 @@ body {
   animation: spin-disc 6s linear infinite;
   transform-origin: 50% 50%;
   z-index: 1;
+  transition: filter 0.35s ease;
+}
+
+.resume-link:hover .resume-disc,
+.resume-link:focus-visible .resume-disc {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 0 24px rgba(255, 255, 255, 0.65))
+    drop-shadow(0 0 44px rgba(255, 255, 255, 0.4));
+}
+
+.resume-link:active .resume-disc {
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 1))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.75))
+    drop-shadow(0 0 52px rgba(255, 255, 255, 0.45));
+}
+
+.resume-link:hover .resume-arc text,
+.resume-link:focus-visible .resume-arc text,
+.resume-link:active .resume-arc text {
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9))
+    drop-shadow(0 0 14px rgba(255, 255, 255, 0.55));
 }
 
 @keyframes spin-disc {
