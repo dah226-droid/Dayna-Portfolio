@@ -126,3 +126,78 @@ function getOtherRecordsStopScrollY() {
   window.addEventListener('resize', clampScrollToBoundary);
   clampScrollToBoundary();
 })();
+
+(function setupSideTocActiveState() {
+  const tocLinks = Array.from(document.querySelectorAll('.side-toc .toc-link'));
+  if (!tocLinks.length) return;
+  const purpleRegions = Array.from(document.querySelectorAll('.band, .other-records-section'));
+
+  const linksById = new Map();
+  const sections = [];
+
+  tocLinks.forEach((link) => {
+    const targetId = link.getAttribute('href')?.replace('#', '');
+    if (!targetId) return;
+    const section = document.getElementById(targetId);
+    if (!section) return;
+    linksById.set(targetId, link);
+    sections.push(section);
+  });
+
+  if (!sections.length) return;
+
+  function setActiveLink(activeId) {
+    tocLinks.forEach((link) => link.classList.remove('active'));
+    const activeLink = linksById.get(activeId);
+    if (activeLink) activeLink.classList.add('active');
+  }
+
+  function updateTocContrast() {
+    tocLinks.forEach((link) => {
+      const rect = link.getBoundingClientRect();
+      const x = rect.left + 4;
+      const y = rect.top + rect.height / 2;
+      const overlapsPurple = purpleRegions.some((region) => {
+        const regionRect = region.getBoundingClientRect();
+        return (
+          x >= regionRect.left &&
+          x <= regionRect.right &&
+          y >= regionRect.top &&
+          y <= regionRect.bottom
+        );
+      });
+      link.classList.toggle('on-purple', overlapsPurple);
+    });
+  }
+
+  let contrastRafId = null;
+  function requestContrastUpdate() {
+    if (contrastRafId !== null) return;
+    contrastRafId = window.requestAnimationFrame(() => {
+      contrastRafId = null;
+      updateTocContrast();
+    });
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveLink(entry.target.id);
+        }
+      });
+    },
+    {
+      root: null,
+      // Trigger when section reaches the top viewing band.
+      rootMargin: '-22% 0px -70% 0px',
+      threshold: 0
+    }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+  setActiveLink('introduction');
+  updateTocContrast();
+  window.addEventListener('scroll', requestContrastUpdate, { passive: true });
+  window.addEventListener('resize', requestContrastUpdate);
+})();
